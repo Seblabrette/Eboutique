@@ -1,0 +1,55 @@
+{% extends 'exampleapp/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+     {% for product in products %}
+     <div class="col-lg-4">
+          <img class="thumbnail" src="{{product.imageURL}}">
+          <div class="box-element product">
+               <h5><strong>{{product.name}}</strong></h5>
+               <hr>
+     
+               {% if product.available %}
+               <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Ajouter</button>
+               {% else %}
+               <a class="btn btn-warning couleur-or">Bientôt</a>
+               {% endif %}
+               <button data-productname="{{product.name}}" data-productdescr="{{product.description}}" class="btn btn-outline-secondary more-details">Détails</button>
+               <h5 style="float: right"><strong>{{product.price|floatformat:2}} €</strong></h5>
+     
+          </div>
+     </div>
+     {% endfor %}
+</div>
+<!-- Popup begining-->
+<div class="modal" id="modal">
+     <div class="modal-back"></div>
+     <div class="modal-container" id="modal-container">
+          Description de l'article<br />
+     </div>
+</div>
+<!-- Popup end -->
+
+<script type="text/javascript">
+     let btnslist = document.getElementsByClassName("more-details")
+     for (let btn of btnslist){
+          btn.onclick = function() {
+               let productname = this.dataset.productname
+               let productdescr = this.dataset.productdescr
+               //alert('Product ID :'+ productId);
+               htmlcontentstring = "<center><h4> "+productname+" </h4></center>"
+               htmlcontentstring += "<hr>"
+               htmlcontentstring += productdescr
+               document.getElementById('modal-container').innerHTML = htmlcontentstring;
+               document.getElementById('modal').classList.remove("modal");
+          };
+     };
+     document.getElementById('modal-container').onclick = function(){
+          document.getElementById('modal').classList.add("modal");
+     };
+     
+</script>
+
+{% endblock content %}
+
